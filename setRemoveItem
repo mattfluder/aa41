@@ -1,0 +1,39 @@
+#include <fstream>
+#include <string>
+#include <iostream>
+using namespace std;
+
+int setRemoveItem(string code)
+{
+    string line;
+    //Open Input File
+    ifstream in("infile.txt");
+    if(!in.is_open())
+    {
+      cout << "Input File Failed to Open\n";
+      return 1;
+    }
+
+    //Open Temporary Output File
+    ofstream out ("outfile.txt");
+    //Loop to read/write the file.
+    while (getline(in,line))
+    {
+        if(line != code)
+        out<< line << "\n";
+    }
+    in.close();
+    out.close();
+    //Delete the original file
+    remove("infile.txt");
+    //Rename Edited File to Infile.txt
+    rename("outfile.txt","infile.txt");
+    return 0;
+}
+
+int main()
+{
+    temp = getItemData("aaaaaaaa")
+    setRemoveItem(temp);
+}
+
