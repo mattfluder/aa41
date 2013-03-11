@@ -3,11 +3,13 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <vector>
 
 
 using namespace std;
 
 char inputFilename[] = "test.txt";
+
 
 void setRemoveItem(string code)
 {
@@ -76,11 +78,6 @@ void setRemoveItem(string code)
                      }
                      
              }
-             cout << "\nCode: " << code2 << "\n";
-             cout << "Description: " << description << "\n";
-             cout << "COST: " << cost << "\n";
-             cout << "QUANTITY: " << quantity << "\n";
-             cout << "VALUE: " << value << "\n";
              if (code2 != code)
              {
                        if (in.eof())
@@ -109,7 +106,7 @@ void setItemData (string code, string description, long cost, int quantity, int 
 	bool spotFound=false;
 	string currentLine;
 	inputFile.open(inputFilename);//opens input file
-	outputFile.open("output.txt");//opens the output file
+	outputFile.open("outfile.txt", ios::app);//opens the output file
 
 	if (!inputFile)
 	{
@@ -140,12 +137,13 @@ void setItemData (string code, string description, long cost, int quantity, int 
     inputFile.close();
 	outputFile.close();
 	remove(inputFilename);
-	rename("output.txt",inputFilename);
+	rename("outfile.txt",inputFilename);
 	return;
  }
 
-void getAllItemsInCostRange(string min_cost, string max_cost)
+void getAllItemsInCostRange(long min_cost, long max_cost)
 {
+   vector<string> product(2);
    string code;
    string description;
    string cost;
@@ -154,6 +152,8 @@ void getAllItemsInCostRange(string min_cost, string max_cost)
    string value;
    int ctr = 0;
    
+   product.at(0) = "";
+   product.at(1) = "True";
    
    string fileDataLine, min_test, max_test;
    ifstream File(inputFilename);
@@ -186,14 +186,18 @@ void getAllItemsInCostRange(string min_cost, string max_cost)
                }
                
    }
-   //File >> min_test >> max_test;
-   cout << min_test;
-   if ((min_test.compare(min_cost) == 0) && (max_test.compare(max_cost)) == 0) {
+   istringstream minBuffer(min_test);
+   istringstream maxBuffer(max_test);
+   long longMin;
+   long longMax;
+   minBuffer >> longMin;
+   maxBuffer >> longMax;
+   if ((longMin == min_cost) && (longMax == max_cost)) {
      
     while(!File.eof()) 
     {
        getline(File, fileDataLine);
-       cout << fileDataLine;
+       //cout << fileDataLine;
        
        code = "";
        description = "";
@@ -236,8 +240,7 @@ void getAllItemsInCostRange(string min_cost, string max_cost)
                           ctr = 0;
                }
        }
-       cout << "\nCode: " << code << "\n";
-       cout << "Description: " << description << "\n";
+       
        istringstream costBuffer(cost);
        istringstream quantityBuffer(quantity);
        istringstream valueBuffer(value);
@@ -247,33 +250,129 @@ void getAllItemsInCostRange(string min_cost, string max_cost)
        costBuffer >> longCost;
        quantityBuffer >> intQuantity;
        valueBuffer >> intValue;
-       cout << "COST: " << longCost << "\n";
-       cout << "QUANTITY: " << intQuantity << "\n";
-       cout << "VALUE: " << intValue << "\n";
-       
-       if (intValue == 0) {
-         
+
+       if ((intValue == 0) && (!File.eof()) && (longCost >= min_cost) && (longCost <= max_cost)) {
          File.close();
          setRemoveItem(code);
          setItemData (code,description,longCost,intQuantity,1);
-         getAllItemsInCostRange(min_cost,max_cost);
+         if (product.at(1) != "")
+         {
+                           if (File.eof())
+                           {
+                                          product.at(1) = "True";
+                           }
+                           else
+                           {
+                                          product.at(1) = "False";
+                           }
+         }
+         if (product.at(0) == "")
+         {
+                           product.at(0) = fileDataLine;
+                           product.at(1) = "True";
+         }
+         
+         getAllItemsInCostRange(min_cost,max_cost);         
+         
        } 
        
     }
+    cout << product.at(0) << "\n" << product.at(1) << "\n";
+    system("pause");
    }
-        
-     
+   else
+   {
+        stringstream stringMinimum; 
+        stringMinimum << min_cost;
+
+        setRemoveItem(stringMinimum.str());
+        ofstream outputFile;
+       	outputFile.open("outfile.txt");//opens the output file
+       	outputFile << min_cost << "\t" << max_cost << "\n";
+       	
+        while(!File.eof()) 
+        {
+           getline(File, fileDataLine);
+           cout << fileDataLine;
+           
+           code = "";
+           description = "";
+           cost = "";
+           quantity = "";
+           value = "";
+                 
+           for(int ctr2 = 0; ctr2 < fileDataLine.length(); ctr2++)
+           {
+                   if (fileDataLine[ctr2] == '\t')
+                   {
+                              ctr ++;
+                   }
+                   else if (ctr == 0)
+                   {
+                              code +=fileDataLine[ctr2];      
+                   }
+                         
+                   else if (ctr == 1)
+                   {
+                              description += fileDataLine[ctr2];
+                   }
+                         
+                   else if (ctr == 2)    
+                   {
+                              cost += fileDataLine[ctr2];
+                   }
+                         
+                   else if (ctr == 3)
+                   {
+                              quantity += fileDataLine[ctr2];
+                   }
+                   else if (ctr == 4)
+                   {
+                              value += fileDataLine[ctr2];
+                              ctr++;
+                   }
+                   if (ctr2 == fileDataLine.length()-1)
+                   { 
+                              ctr = 0;
+                   }
+           }
+           
+           istringstream costBuffer(cost);
+           istringstream quantityBuffer(quantity);
+           istringstream valueBuffer(value);
+           long longCost;
+           int intQuantity;
+           int intValue;
+           costBuffer >> longCost;
+           quantityBuffer >> intQuantity;
+           valueBuffer >> intValue;
+           cout << "\nCode: " << code << "\n";
+           cout << "Description: " << description << "\n";
+           cout << "COST: " << longCost << "\n";
+           cout << "QUANTITY: " << intQuantity << "\n";
+           cout << "VALUE: " << intValue << "\n";
+           cout << "min_cost: " << min_cost << "\n";
+           cout << "max_cost: " << max_cost << "\n\n";
+           
+           if ((intValue == 1))
+           {
+               setRemoveItem(code); 
+               outputFile << code <<"\t" << description << "\t" << cost << "\t" << quantity << "\t0\n";     
+           } 
+        }
+        File.close();
+        outputFile.close();
+       	remove(inputFilename);
+       	rename("outfile.txt",inputFilename);  
+        getAllItemsInCostRange(min_cost,max_cost);         
+     }         
    
-   
-   
-   
-   
-   File.close();
+  File.close();
   return;
 }
 
 int main() {
-getAllItemsInCostRange("1", "10");
+getAllItemsInCostRange(1, 10);
 system("PAUSE");
 return 0;
 }

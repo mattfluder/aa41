@@ -348,7 +348,7 @@ vector<string> getItemData (string code)
 
 int main(int argc, char *argv[])
 { 
-    /*
+    
     vector<string> temp(2);
     cout << "setItemData(\"code9\",\"des69\", 696, 69)\n";
     setItemData("code9","des69", 696, 69);
@@ -357,7 +357,7 @@ int main(int argc, char *argv[])
     cout << "\ngetItemCode\nCode: " << getItemCode("description4") << "\n";
     cout << "\ngetItemCost\nCost: " << getItemCost("itemnum2") << "\n";
     temp = getItemData("itemnum1");
-    cout << "\ngetItemData\nDescription: " + temp.at(0) + "\nCost:" + temp.at(1) + "\n";*/
+    cout << "\ngetItemData\nDescription: " + temp.at(0) + "\nCost:" + temp.at(1) + "\n";
     
     
     system("PAUSE");
