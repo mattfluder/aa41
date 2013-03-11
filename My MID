@@ -1,0 +1,5 @@
+setRemoveItem(code):
+
+Removes the description of a the given code as an output file. If the item could not be found in the file,
+the program will return the original file. If the file cannot be found it would print "Input File Failed to Open"
+and exit the program.
