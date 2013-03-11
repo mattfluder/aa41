@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <typeinfo>
 
 using namespace std;
 char inputFilename[] = "test.txt";
@@ -23,6 +24,9 @@ string getItemCode(string description)
        string description2;
        string cost;
        string quantity;
+       string text;
+       int ctr = 0;
+       
        
        ifstream inFile;
        inFile.open(inputFilename, ios::in);
@@ -36,12 +40,43 @@ string getItemCode(string description)
        
        while (!inFile.eof())
        {
-             inFile >> code >> description2 >> cost >> quantity;
+             getline(inFile,text);
+             for(int ctr2 = 0; ctr2 <= text.length(); ctr2++)
+            
+            if (text[ctr2] == '\t')
+             {
+                  if (ctr == 3)
+                  {
+                      ctr = 0;
+                  }
+                  else
+                  {
+                      ctr ++;
+                  }
+             }
+             else if (ctr == 0)
+             {
+                  code = code+text[ctr2];      
+             }
+             
+             else if (ctr == 1)
+             {
+                  description2 += text[ctr2];
+             }
+             
+             else if (ctr == 2)    
+             {
+                  cost += text[ctr2];
+             }
+             
+             else if (ctr == 3)
+             {
+                  quantity += text[ctr2];
+             }
              if (description2 == description)
              {
                               return code;
-             }
-             //Print(code,description2,cost,quantity); 
+             } 
        }
        
                        
@@ -54,6 +89,8 @@ string getItemCost(string code)
        string description;
        string cost;
        string quantity;
+       string text;
+       int ctr = 0;
        
        ifstream inFile;
        inFile.open(inputFilename, ios::in);
@@ -67,12 +104,43 @@ string getItemCost(string code)
        
        while (!inFile.eof())
        {
-             inFile >> code2 >> description >> cost >> quantity;
+             getline(inFile,text);
+             for(int ctr2 = 0; ctr2 <= text.length(); ctr2++)
+            
+            if (text[ctr2] == '\t')
+             {
+                  if (ctr == 3)
+                  {
+                      ctr = 0;
+                  }
+                  else
+                  {
+                      ctr ++;
+                  }
+             }
+             else if (ctr == 0)
+             {
+                  code2 = code2+text[ctr2];      
+             }
+             
+             else if (ctr == 1)
+             {
+                  description += text[ctr2];
+             }
+             
+             else if (ctr == 2)    
+             {
+                  cost += text[ctr2];
+             }
+             
+             else if (ctr == 3)
+             {
+                  quantity += text[ctr2];
+             }
              if (code2 == code)
              {
                               return cost;
              }
-             //Print(code2,description,cost,quantity); 
        }
        
                        
@@ -85,7 +153,10 @@ vector<string> getItemData (string code)
        string description;
        string cost;
        string quantity;
+       string currentLine;
+       string text;
        vector<string> send(2);
+       int ctr = 0;
        
        ifstream inFile;
        inFile.open(inputFilename, ios::in);
@@ -99,16 +170,46 @@ vector<string> getItemData (string code)
        
        while (!inFile.eof())
        {
-             inFile >> code2 >> description >> cost >> quantity;
+             getline(inFile,text);
+             for(int ctr2 = 0; ctr2 <= text.length(); ctr2++)
+            
+            if (text[ctr2] == '\t')
+             {
+                  if (ctr == 3)
+                  {
+                      ctr = 0;
+                  }
+                  else
+                  {
+                      ctr ++;
+                  }
+             }
+             else if (ctr == 0)
+             {
+                  code2 = code2+text[ctr2];      
+             }
+             
+             else if (ctr == 1)
+             {
+                  description += text[ctr2];
+             }
+             
+             else if (ctr == 2)    
+             {
+                  cost += text[ctr2];
+             }
+             
+             else if (ctr == 3)
+             {
+                  quantity += text[ctr2];
+             }
              if (code2 == code)
              {
                        send.at(0) = description;
                        send.at(1) = cost;
                        return send;
              }
-             //Print(code2,description,cost,quantity); 
        }
-       
                        
        return send;
 }        
@@ -116,8 +217,7 @@ vector<string> getItemData (string code)
 int main(int argc, char *argv[])
 { 
     vector<string> temp(2);
-    //Print(152,"string",50,4);
-    cout << "getItemCode\nCode: " << getItemCode("zzzzzzzzzzzzzzzzzzzzzzzzz") << "\n";
+    cout << "getItemCode\nCode: " << getItemCode("This is a test") << "\n";
     cout << "\ngetItemCost\nCost: " << getItemCost("aaaaaaaa") << "\n";
     temp = getItemData("aaaaaaaa");
     cout << "\ngetItemData\nDescription: " + temp.at(0) + "\nCost:" + temp.at(1) + "\n";
