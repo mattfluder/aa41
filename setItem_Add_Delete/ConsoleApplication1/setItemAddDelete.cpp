@@ -48,7 +48,6 @@ using namespace std;
       
 	ifstream inputFile; 
 	ofstream outputFile;
-	string currentLine;
 	string tempCode, Description;
 	long cost;
 	int quantity;
@@ -92,7 +91,6 @@ using namespace std;
       
 	ifstream inputFile; 
 	ofstream outputFile;
-	string currentLine;
 	string tempCode, Description;
 	long cost;
 	int quantity;
