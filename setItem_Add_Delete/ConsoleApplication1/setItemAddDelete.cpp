@@ -15,36 +15,48 @@ void Print(string code, string description, long cost, int quantity)
 
  void setItemData (string code, string description, long cost, int quantity){
       
-	fstream inputFile;
+	ifstream inputFile; 
+	ofstream outputFile;
 	bool spotFound=false;
 	string currentLine;
-	inputFile.open("input.txt", ios::in | ios::out);
+	inputFile.open("input.txt");//opens input file
+	outputFile.open("output.txt");//opens the output file
+
 	if (!inputFile)
 	{
 		cerr<<"Can't open input file\n";
 		system("PAUSE");
 		exit(1);
 	}
-	while(!inputFile.eof()&&!spotFound){
+	if (!outputFile)
+	{
+		cerr<<"Can't open input file\n";
+		system("PAUSE");
+		exit(1);
+	}
+	while(!inputFile.eof()){
 	getline(inputFile, currentLine);
 		if (currentLine.empty()){
-            inputFile << code << "\t" << description << "\t" << cost << "\t" << quantity << "\t";
 			spotFound= true;
-			Print(code, description, cost, quantity);
+			outputFile << code <<"\t" << description << "\t" << cost << "\t" << quantity << "\n";
+		}
+		else {
+			outputFile << currentLine << "\n";
 		}
 	}
-	if (!spotFound)
-	{
-         Print(code, description, cost, quantity);
-         inputFile << code << "\t" << description << "\t" << cost << "\t" << quantity << "\t";
-    }
+	if (!spotFound){
+		outputFile << code <<"\t" << description << "\t" << cost << "\t" << quantity << "\n";
+	}
 	//Print(code, description, cost, quantity);
     inputFile.close();
+	outputFile.close();
+	remove("input.txt");
+	rename("output.txt","input.txt");
  }
 
 int main(int argc, char *argv[])
 {
-	setItemData("code9","description9", 999, 9);
+	setItemData("code9","des69", 696, 69);
 	system("PAUSE");
 	return EXIT_SUCCESS;
 }
