@@ -599,6 +599,93 @@ vector<string> getAllItemsInCostRange(long min_cost, long max_cost)
   return product;
 }        
 
+void setAddQuantity(string code, int increment)
+{
+      
+	ifstream inputFile; 
+	ofstream outputFile;
+	string tempCode, Description;
+	long cost;
+	int quantity;
+	inputFile.open(inputFilename);//opens input file
+	outputFile.open("output.txt");//opens the output file
+
+	if (!inputFile)
+	{
+		cerr<<"Can't open input file\n";
+		system("PAUSE");
+		exit(1);
+	}
+	if (!outputFile)
+	{
+		cerr<<"Can't open output file\n";
+		system("PAUSE");
+		exit(1);
+	}
+	while(!inputFile.eof()){
+	inputFile >> tempCode;
+		if(!(tempCode=="\n")){
+			inputFile>> Description >> cost >> quantity;
+			if(Description!=""){
+				outputFile << tempCode <<"\t" << Description << "\t" << cost << "\t";
+				if(tempCode==code){
+					quantity += increment;
+				}
+			outputFile << quantity << "\n";
+			}
+		}
+	Description = "";
+	}
+
+    inputFile.close();
+	outputFile.close();
+	remove(inputFilename);
+	rename("output.txt",inputFilename);
+ }   
+
+void setDeleteQuantity(string code, int decrement)
+{
+      
+	ifstream inputFile; 
+	ofstream outputFile;
+	string tempCode, Description;
+	long cost;
+	int quantity;
+	inputFile.open(inputFilename);//opens input file
+	outputFile.open("output.txt");//opens the output file
+
+	if (!inputFile)
+	{
+		cerr<<"Can't open input file\n";
+		system("PAUSE");
+		exit(1);
+	}
+	if (!outputFile)
+	{
+		cerr<<"Can't open output file\n";
+		system("PAUSE");
+		exit(1);
+	}
+	while(!inputFile.eof()){
+	inputFile >> tempCode;
+		if(!(tempCode=="\n")){
+			inputFile>> Description >> cost >> quantity;
+			if(Description!=""){
+				outputFile << tempCode <<"\t" << Description << "\t" << cost << "\t";
+				if(tempCode==code){
+						quantity -= decrement;
+				}
+			outputFile << quantity << "\n";
+			}
+		}
+	Description = "";
+	}
+
+    inputFile.close();
+	outputFile.close();
+	remove(inputFilename);
+	rename("output.txt",inputFilename);
+ }
 int main(int argc, char *argv[])
 { 
     
