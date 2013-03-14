@@ -1,4 +1,0 @@
-code1	des1	123	1
-code2	des2	456	22
-code3	des3	789	3
-code4	des4	101	3

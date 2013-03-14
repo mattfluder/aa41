@@ -1,5 +1,0 @@
-1	10
-itemnum1	description1	0	1100	0
-itemnum2	description2	5	1200	0
-itemnum3	description3	10	1300	0
-itemnum4	description4	15	1400	0
